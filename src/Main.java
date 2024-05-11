@@ -1,5 +1,5 @@
 //Напишите приложение, которое будет запрашивать у пользователя следующие данные в произвольном порядке, разделенные пробелом:
-//Фамилия Имя Отчество датарождения номертелефона пол
+//Фамилия Имя Отчество дата_рождения номер_телефона пол
 //Форматы данных:
 //фамилия, имя, отчество - строки
 //дата_рождения - строка формата dd.mm.yyyy
@@ -17,3 +17,20 @@
 //Не забудьте закрыть соединение с файлом.
 //При возникновении проблемы с чтением-записью в файл, исключение должно быть корректно обработано, пользователь должен увидеть стектрейс ошибки.
 
+import java.util.Scanner;
+
+public class Main {
+
+    private static final int fields_number = 6;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        scanner.close();
+
+        String[] fields = input.split( " ");
+        if (fields.length != fields_number) {
+            System.err.println("Ввели полей " + fields.length+ " из 6 требуемых!");
+        }
+    }
+}
