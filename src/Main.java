@@ -17,6 +17,13 @@
 //Не забудьте закрыть соединение с файлом.
 //При возникновении проблемы с чтением-записью в файл, исключение должно быть корректно обработано, пользователь должен увидеть стектрейс ошибки.
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
@@ -31,6 +38,38 @@ public class Main {
         String[] fields = input.split( " ");
         if (fields.length != fields_number) {
             System.err.println("Ввели полей " + fields.length+ " из 6 требуемых!");
+        }
+        String lastName = fields[0];
+        String firstName = fields[1];
+        String middleName = fields[2];
+
+        LocalDate birthDate;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            birthDate = LocalDate.parse(fields[3], formatter);
+        } catch (DateTimeParseException e) {
+            System.err.println("Формат даты - дд.мм.гггг");
+            return;
+        }
+        long phoneNumber;
+        try {
+            phoneNumber = Long.parseLong(fields[4]);
+        } catch (NumberFormatException e) {
+            System.err.println("Формат телефон не верный!");
+            return;
+        }
+        String gender = fields[5];
+        if ((!"m".equals(gender)) && (!"f".equals(gender))){
+            System.err.println("Формат пола f или m");
+            return;
+        }
+
+        String fileName = lastName + ".txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            writer.write(lastName + " " + firstName + " " + middleName + " " + birthDate.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + phoneNumber + " " + gender);
+            writer.newLine();
+        } catch (IOException e) {
+            System.err.println("Ошибка записи!");
         }
     }
 }
